@@ -13,6 +13,12 @@ font-size: 14px;
 font-weight:700;
   
 `
+
+export const ContainerItems = styled.ul`
+margin-top: 40px;
+padding-right:40px;
+`
+
 export const ContactItems = styled.li`
 
 list-style:none;
@@ -24,7 +30,3 @@ margin-bottom:5px;
 `
 
 
-export const ContainerItems = styled.ul`
-margin-top: 40px;
-padding-right:40px;
-`
