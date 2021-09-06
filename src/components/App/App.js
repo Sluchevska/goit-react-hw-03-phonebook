@@ -54,11 +54,13 @@ class App extends React.Component {
       contact.name.toLowerCase().includes(normalizedFilter),
     );
   };
+  
   deleteContact = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+
   componentDidUpdate(prevProps, prevState) {
     if (this.state.contacts !== prevState.contacts) {
     localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
