@@ -65,6 +65,12 @@ class App extends React.Component {
    }
   }
 
+  componentDidMount() {
+    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+    this.setState({contacts:parsedContacts})
+
+  }
+
   render() {
     const { filter } = this.state;
 
