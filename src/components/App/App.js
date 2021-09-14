@@ -26,10 +26,10 @@ class App extends React.Component {
     const doublePhoneNumber = this.state.contacts.find(contact => contact.number === number)
     if (doubleName) {
       alert(`${name} is already in contacts`);
-      return;
+    
     } else if (doublePhoneNumber) {
       alert(`This number ${number} is already in contacts`);
-      return;
+    
     }
     const newContact = {
       id: uuidv4(),
@@ -37,7 +37,7 @@ class App extends React.Component {
       number,
     };
 
-    this.setState(prevState => ({
+    !doublePhoneNumber && this.setState(prevState => ({
       contacts: [newContact, ...prevState.contacts],
     }));
   };
