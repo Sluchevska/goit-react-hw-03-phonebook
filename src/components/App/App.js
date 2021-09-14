@@ -19,6 +19,8 @@ class App extends React.Component {
     filter: '',
   };
 
+  #contacts='contacts'
+
   addContact = ({ name, number }) => {
     const doubleName = this.state.contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase(),
@@ -42,12 +44,14 @@ class App extends React.Component {
       }));
   };
 
-  changeFilter = filter => {
-    this.setState({ filter });
+   changeFilter = e => {
+     this.setState({ filter: e.currentTarget.value });
   };
 
-  handleBlur = () => {
+
+  handleBlur = (e) => {
     this.setState({ filter: '' });
+    e.currentTarget.value = '';
   };
 
   getVisibleContacts = () => {
@@ -67,15 +71,15 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      localStorage.setItem(this.#contacts, JSON.stringify(this.state.contacts));
     }
   }
 
   componentDidMount() {
     const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (parsedContacts) {
+    parsedContacts &&
       this.setState({ contacts: parsedContacts });
-    }
+    
   }
 
   render() {
