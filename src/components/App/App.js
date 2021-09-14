@@ -21,25 +21,25 @@ class App extends React.Component {
 
   addContact = ({ name, number }) => {
     const doubleName = this.state.contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase(),
-    )
-    const doublePhoneNumber = this.state.contacts.find(contact => contact.number === number)
-    if (doubleName) {
-      alert(`${name} is already in contacts`);
-    
-    } else if (doublePhoneNumber) {
-      alert(`This number ${number} is already in contacts`);
-    
-    }
+      contact => contact.name.toLowerCase() === name.toLowerCase(),
+    );
+    const doublePhoneNumber = this.state.contacts.find(
+      contact => contact.number === number,
+    );
+    doubleName && alert(`${name} is already in contacts`);
+    doublePhoneNumber && alert(`This number ${number} is already in contacts`);
+
     const newContact = {
       id: uuidv4(),
       name,
       number,
     };
 
-    !doublePhoneNumber && this.setState(prevState => ({
-      contacts: [newContact, ...prevState.contacts],
-    }));
+    !doublePhoneNumber &&
+      !doubleName &&
+      this.setState(prevState => ({
+        contacts: [newContact, ...prevState.contacts],
+      }));
   };
 
   changeFilter = filter => {
@@ -47,8 +47,8 @@ class App extends React.Component {
   };
 
   handleBlur = () => {
-    this.setState({filter:''})
-  }
+    this.setState({ filter: '' });
+  };
 
   getVisibleContacts = () => {
     const { filter, contacts } = this.state;
@@ -58,7 +58,7 @@ class App extends React.Component {
       contact.name.toLowerCase().includes(normalizedFilter),
     );
   };
-  
+
   deleteContact = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
@@ -67,15 +67,15 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.contacts !== prevState.contacts) {
-    localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
-   }
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
   }
 
   componentDidMount() {
     const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if(parsedContacts){
-    this.setState({contacts:parsedContacts})}
-
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
   }
 
   render() {
@@ -86,7 +86,11 @@ class App extends React.Component {
         <TitleH1>Phonebook</TitleH1>
         <ContactForm onSubmit={this.addContact} />
         <TitleH2>Contacts</TitleH2>
-        <Filter value={filter} onChange={this.changeFilter} onBlur={ this.handleBlur}/>
+        <Filter
+          value={filter}
+          onChange={this.changeFilter}
+          onBlur={this.handleBlur}
+        />
         <ContactList
           contacts={this.getVisibleContacts()}
           onRemove={this.deleteContact}
